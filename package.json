@@ -1,13 +1,17 @@
 {
-  "name": "attempt2",
-  "version": "1.0.0",
-  "description": "a second attmept lol",
-  "main": "better-server.js",
-  "author": "derek200pp",
-  "license": "MIT",
-  "dependencies": {
-    "express": "^4.17.1",
-    "nodemon": "^1.19.1",
-    "socket.io": "^2.2.0"
-  }
+    "name": "attempt2",
+    "version": "1.0.0",
+    "description": "a second attmept lol",
+    "main": "better-server.js",
+    "scripts": {
+        "start": "node better-server.js",
+        "test": "echo hey bud"
+    },
+    "author": "derek200pp",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.17.1",
+        "nodemon": "^1.19.1",
+        "socket.io": "^2.2.0"
+    }
 }
