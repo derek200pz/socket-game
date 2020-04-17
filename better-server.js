@@ -5,8 +5,8 @@ var verbose = true;
 
 var app = require('express')();
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
-var fs = require('fs');
+//var io = require('socket.io')(http);
+//var fs = require('fs');
 var users = 0;
 var sprites = {};
 
