@@ -63,6 +63,7 @@ app.get('/', function(req, res) {
     if (verbose) console.log('sending game.html');
 });
 
+/*
 //when a new user connects
 io.on('connection', function(socket) {
     if (verbose) console.log('a user connected');
@@ -94,7 +95,7 @@ io.on('connection', function(socket) {
         io.sockets.emit("deletesprite", { num: usernum });
         delete sprites[usernum];
     });
-});
+});*/
 
 //serve any other pages or files that might exist
 app.get('/*', function(req, res, next) {
