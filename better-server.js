@@ -60,6 +60,7 @@ var randomColor = function() {
 //serve the homepage
 app.get('/', function(req, res) {
     res.sendFile(__dirname + '/game.html');
+    if (verbose) console.log('sending game.html');
 });
 
 //when a new user connects
@@ -98,11 +99,11 @@ io.on('connection', function(socket) {
 //serve any other pages or files that might exist
 app.get('/*', function(req, res, next) {
 
-    //This is the current file they have requested
-    var file = req.params[0];
-
     //For debugging, we can track what files are requested
     if (verbose) console.log('\t :: Express :: file requested : ' + file);
+
+    //This is the current file they have requested
+    var file = req.params[0];
 
     //Send the requesting client the file
     res.sendFile(__dirname + '/' + file);
