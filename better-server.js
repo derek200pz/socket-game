@@ -54,7 +54,6 @@ var randomColor = function() {
     return "#" + hex(Math.floor(Math.random() * 16)) + hex(Math.floor(Math.random() * 16)) + hex(Math.floor(Math.random() * 16));
 }
 
-console.log("got past the global function defs");
 
 
 //serve the homepage
@@ -63,7 +62,6 @@ app.get('/', function(req, res) {
     if (verbose) console.log('sending game.html');
 });
 
-console.log("set up the app.get for game.html");
 
 /*
 //when a new user connects
