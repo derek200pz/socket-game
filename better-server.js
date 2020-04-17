@@ -4,7 +4,7 @@ console.log("\n\nI'm Derek's server!\nI belong to him.\nHe is my father.\nI wors
 var verbose = true;
 
 var app = require('express')();
-var http = require('http').Server(app);
+//var http = require('http').Server(app);
 //var io = require('socket.io')(http);
 //var fs = require('fs');
 var users = 0;
@@ -54,7 +54,7 @@ var randomColor = function() {
     return "#" + hex(Math.floor(Math.random() * 16)) + hex(Math.floor(Math.random() * 16)) + hex(Math.floor(Math.random() * 16));
 }
 
-
+console.log("got past the global function defs");
 
 
 //serve the homepage
@@ -62,6 +62,8 @@ app.get('/', function(req, res) {
     res.sendFile(__dirname + '/game.html');
     if (verbose) console.log('sending game.html');
 });
+
+console.log("set up the app.get for game.html");
 
 /*
 //when a new user connects
@@ -110,6 +112,8 @@ app.get('/*', function(req, res, next) {
     res.sendFile(__dirname + '/' + file);
 
 });
+
+console.log("got past the rest of the app.gets for /*");
 
 //ssshhhhh. listen.
 app.listen(8080, function() {
