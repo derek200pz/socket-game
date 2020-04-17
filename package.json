@@ -4,7 +4,7 @@
     "description": "a second attmept lol",
     "main": "better-server.js",
     "scripts": {
-        "start": "node simple-server.js",
+        "start": "node better-server.js",
         "test": "echo hey bud"
     },
     "author": "derek200pp",
