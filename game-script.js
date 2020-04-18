@@ -5,6 +5,8 @@ console.log("About to get all the variables ready")
 var canv;
 var ctx;
 var sprites = [];
+var speed = 10;
+var mySpriteNum = -1;
 
 //functions
 
@@ -46,8 +48,58 @@ $(document).ready(function() {
     ctx = canv.getContext("2d");
     ctx.imageSmoothingEnabled = false;
 
-    //Now we can listen for that event
+    //handle key presses
+    const playerMovement = {
+        up: false,
+        down: false,
+        left: false,
+        right: false
+    };
+    const keyDownHandler = (e) => {
+        if (e.keyCode == 39) {
+            playerMovement.right = true;
+        } else if (e.keyCode == 37) {
+            playerMovement.left = true;
+        } else if (e.keyCode == 38) {
+            playerMovement.up = true;
+        } else if (e.keyCode == 40) {
+            playerMovement.down = true;
+        }
+    };
+    const keyUpHandler = (e) => {
+        if (e.keyCode == 39) {
+            playerMovement.right = false;
+        } else if (e.keyCode == 37) {
+            playerMovement.left = false;
+        } else if (e.keyCode == 38) {
+            playerMovement.up = false;
+        } else if (e.keyCode == 40) {
+            playerMovement.down = false;
+        }
+    };
 
+    document.addEventListener('keydown', keyDownHandler, false);
+    document.addEventListener('keyup', keyUpHandler, false);
+
+    //the heartbeat of the game: this is executed every .25 seconds
+    setInterval(() => {
+        if (playerMovement.up) {
+            sprites[mySpriteNum].y -= speed;
+        }
+        if (playerMovement.down) {
+            sprites[mySpriteNum].y += speed;
+        }
+        if (playerMovement.left) {
+            sprites[mySpriteNum].x -= speed;
+        }
+        if (playerMovement.right) {
+            sprites[mySpriteNum].x += speed;
+        }
+        refreshCanvas();
+    }, 50);
+
+
+    //Now we can listen for that event
     socket.on('connect', function() {
         //Note that the data is the object we sent from the server, as is. So we can assume its id exists.
         console.log('Connected successfully to the socket.io server. I\'m the client!');
@@ -83,6 +135,7 @@ $(document).ready(function() {
                 this.img = img;
             });
             sprites = data.sprites;
+            mySpriteNum = data.usernum;
             refreshCanvas();
         });
 
@@ -95,9 +148,9 @@ $(document).ready(function() {
             console.log(sprites);
         });
 
-        $(document).on("keydown", function(evt) {
-            socket.emit('movekey', { keyCode: evt.keyCode });
-        })
+        // $(document).on("keydown", function(evt) {
+        //     socket.emit('movekey', { keyCode: evt.keyCode });
+        // })
 
         socket.on('movement', function(data) {
             sprites[data.num].x = data.newcoords.x;
