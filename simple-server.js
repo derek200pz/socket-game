@@ -49,11 +49,12 @@ io.on('connection', function(socket) {
     sprites[usernum] = tools.spriteFactory(usernum, images["delmar-left"], images["delmar-right"]);
     io.sockets.emit('newsprite', { num: usernum, sprite: sprites[usernum] });
 
-    //when the user moves, move them
-    socket.on('movekey', function(data) {
-        tools.updateSprite(sprites[usernum], data.keyCode, speed);
+    //when the user moves, tell everyone else
+    socket.on('imoved', function(data) {
+        sprites[usernum].x = data.newcoords.x;
+        sprites[usernum].y = data.newcoords.y;
         if (verbose) console.log("moved a sprite, usernum = " + usernum);
-        io.sockets.emit('movement', { num: usernum, newcoords: { x: sprites[usernum].x, y: sprites[usernum].y } });
+        io.sockets.emit('theymoved', { num: usernum, newcoords: { x: sprites[usernum].x, y: sprites[usernum].y } });
     });
 
     //when the user leaves, delete them

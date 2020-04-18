@@ -14,13 +14,16 @@ var draw = function(sprite) {
     ctx.drawImage(sprite.img, sprite.x, sprite.y, 96, 192);
 }
 
-var drawDelmar = function() {
-    var img = new Image();
-    img.src = "img/delmar.png"
-    ctx.drawImage(img, 0, 0, 96, 192);
-    var speechBubble = new SpeechBubble(ctx);
-    speechBubble.text = "I have a penis!"
-    speechBubble.draw();
+var updateSprite = function(sprite, newx, newy) {
+    if (sprite.x < newx) {
+        sprite.img = sprite.rightImg;
+        console.log("faceright")
+    } else if (sprite.x > newx) {
+        sprite.img = sprite.leftImg;
+        console.log("faceleft")
+    }
+    sprite.x = newx;
+    sprite.y = newy;
 }
 
 var clearCanvas = function() {
@@ -30,7 +33,6 @@ var clearCanvas = function() {
 var refreshCanvas = function() {
     clearCanvas();
     $.each(sprites, function(i, sprite) {
-        console.log(sprite);
         draw(sprite);
     });
 }
@@ -77,24 +79,8 @@ $(document).ready(function() {
     document.addEventListener('keydown', keyDownHandler, false);
     document.addEventListener('keyup', keyUpHandler, false);
 
-    //the heartbeat of the game: this is executed every .25 seconds
-    setInterval(() => {
-        if (playerMovement.up) {
-            sprites[mySpriteNum].y -= speed;
-        }
-        if (playerMovement.down) {
-            sprites[mySpriteNum].y += speed;
-        }
-        if (playerMovement.left) {
-            sprites[mySpriteNum].x -= speed;
-            sprites[mySpriteNum].img = sprites[mySpriteNum].leftImg;
-        }
-        if (playerMovement.right) {
-            sprites[mySpriteNum].x += speed;
-            sprites[mySpriteNum].img = sprites[mySpriteNum].rightImg;
-        }
-        refreshCanvas();
-    }, 50);
+
+
 
 
     //Now we can listen for that event
@@ -102,29 +88,41 @@ $(document).ready(function() {
         //Note that the data is the object we sent from the server, as is. So we can assume its id exists.
         console.log('Connected successfully to the socket.io server. I\'m the client!');
 
-        var keys = {};
-        var moveUp = function() { socket.emit('movekey', { keyCode: 38 }); }
-        var moveDown = function() { socket.emit('movekey', { keyCode: 40 }); }
-        var moveRight = function() { socket.emit('movekey', { keyCode: 39 }); }
-        var moveLeft = function() { socket.emit('movekey', { keyCode: 37 }); }
-        window.onkeyup = function(e) { keys[e.keyCode] = false; }
-        window.onkeydown = function(e) { keys[e.keyCode] = true; }
 
-        $("#up-button").click(function() {
-            moveUp();
-        });
+        //  __ __
+        // /  V  \
+        // \     /
+        //  \   /
+        //   \ /
+        //    V
+        //the heartbeat of the game: this is executed every .25 seconds
+        setInterval(() => {
+            var change = false;
+            if (playerMovement.up) {
+                sprites[mySpriteNum].y -= speed;
+                change = true;
+            }
+            if (playerMovement.down) {
+                sprites[mySpriteNum].y += speed;
+                change = true;
+            }
+            if (playerMovement.left) {
+                sprites[mySpriteNum].x -= speed;
+                sprites[mySpriteNum].img = sprites[mySpriteNum].leftImg;
+                change = true;
+            }
+            if (playerMovement.right) {
+                sprites[mySpriteNum].x += speed;
+                sprites[mySpriteNum].img = sprites[mySpriteNum].rightImg;
+                change = true;
+            }
+            if (change) {
+                refreshCanvas();
+                socket.emit('imoved', { newcoords: { x: sprites[mySpriteNum].x, y: sprites[mySpriteNum].y } });
+            }
 
-        $("#down-button").click(function() {
-            moveDown();
-        });
+        }, 50);
 
-        $("#right-button").click(function() {
-            moveRight();
-        });
-
-        $("#left-button").click(function() {
-            moveLeft();
-        });
 
         socket.on('startstate', function(data) {
             $.each(data.sprites, function() {
@@ -161,9 +159,8 @@ $(document).ready(function() {
         //     socket.emit('movekey', { keyCode: evt.keyCode });
         // })
 
-        socket.on('movement', function(data) {
-            sprites[data.num].x = data.newcoords.x;
-            sprites[data.num].y = data.newcoords.y;
+        socket.on('theymoved', function(data) {
+            updateSprite(sprites[data.num], data.newcoords.x, data.newcoords.y);
             refreshCanvas();
         });
 
