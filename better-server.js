@@ -4,9 +4,9 @@ console.log("\n\nI'm Derek's server!\nI belong to him.\nHe is my father.\nI wors
 var verbose = true;
 
 var app = require('express')();
-//var http = require('http').Server(app);
-//var io = require('socket.io')(http);
-//var fs = require('fs');
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+var fs = require('fs');
 var users = 0;
 var sprites = {};
 
@@ -63,7 +63,7 @@ app.get('/', function(req, res) {
 });
 
 
-/*
+
 //when a new user connects
 io.on('connection', function(socket) {
     if (verbose) console.log('a user connected');
@@ -95,7 +95,7 @@ io.on('connection', function(socket) {
         io.sockets.emit("deletesprite", { num: usernum });
         delete sprites[usernum];
     });
-});*/
+});
 
 //serve any other pages or files that might exist
 app.get('/*', function(req, res, next) {
@@ -111,7 +111,6 @@ app.get('/*', function(req, res, next) {
 
 });
 
-console.log("got past the rest of the app.gets for /*");
 
 //ssshhhhh. listen.
 app.listen(8080, function() {

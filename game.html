@@ -1,43 +1,51 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title> Real time farts</title>
-		<style type="text/css">
-			html , body {
-				background: #222;
-				color: #fff;
-				margin: 0;
-				padding: 0;
-			}
-			#canvas {
-				position: absolute;
-				left: 0; right: 0; top: 0; bottom: 0;
-				margin: auto;
-				border: 3px solid #444;
-			}
-			.game-button {
-				
-			}
-		</style>
-	 	
-		 	<!-- Notice the URL, this is handled by socket.io on the server automatically, via express -->
-		<script type="text/javascript" src="/socket.io/socket.io.js"></script>
 
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-		
-			<!-- This will create a connection to socket.io, and print the user serverid that we sent from the server side. --> 
-		<script type="text/javascript" src = "game-script.js"></script>
-		<script type="text/javascript" src = "speech-bubble.js"></script>
+<head>
+    <title> Real time farts</title>
+    <style type="text/css">
+        html,
+        body {
+            background: #222;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        
+        #canvas {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            border: 3px solid #444;
+        }
+        
+        .game-button {}
+    </style>
 
-	</head>
+    <!-- Notice the URL, this is handled by socket.io on the server automatically, via express -->
+    <script type="text/javascript" src="socket.io/socket.io.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> -->
 
-	<body>
-		<h1>Austin didn't think this was a real webiste</h1>
-		<p>...but it iss</p>
-		<canvas id="canvas" width = "800" height = "400"></canvas>
-		<button id = "up-button" >UP</button>
-		<button id = "down-button">DOWN</button>
-		<button id = "left-button">LEFT</button>
-		<button id = "right-button">RIGHT</button>
-	</body>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
+    <!-- This will create a connection to socket.io, and print the user serverid that we sent from the server side. -->
+    <script type="text/javascript" src="game-script.js"></script>
+    <script type="text/javascript" src="speech-bubble.js"></script>
+
+</head>
+
+<body>
+    <h1>Austin didn't think this was a real webiste</h1>
+    <p>...but it iss</p>
+    <canvas id="canvas" width="800" height="400"></canvas>
+    <button id="up-button">UP</button>
+    <button id="down-button">DOWN</button>
+    <button id="left-button">LEFT</button>
+    <button id="right-button">RIGHT</button>
+</body>
+
 </html>
