@@ -160,7 +160,9 @@ $(document).ready(function() {
         // })
 
         socket.on('theymoved', function(data) {
-            updateSprite(sprites[data.num], data.newcoords.x, data.newcoords.y);
+            if (data.num != mySpriteNum) {
+                updateSprite(sprites[data.num], data.newcoords.x, data.newcoords.y);
+            }
             refreshCanvas();
         });
 
