@@ -117,9 +117,9 @@ $(document).ready(function() {
                 change = true;
             }
             if (change) {
-                refreshCanvas();
                 socket.emit('imoved', { newcoords: { x: sprites[mySpriteNum].x, y: sprites[mySpriteNum].y } });
             }
+            refreshCanvas();
 
         }, 50);
 
