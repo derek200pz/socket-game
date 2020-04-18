@@ -153,6 +153,7 @@ $(document).ready(function() {
             data.sprite.img = data.sprite.rightImg;
 
             sprites[data.num] = (data.sprite);
+            refreshCanvas();
         });
 
         // $(document).on("keydown", function(evt) {
