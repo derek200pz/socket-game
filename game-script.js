@@ -11,10 +11,6 @@ var mySpriteNum = -1;
 //functions
 
 var draw = function(sprite) {
-    /*ctx.beginPath();
-    ctx.fillStyle = sprite.color;
-    ctx.rect(sprite.x, sprite.y, sprite.width, sprite.height);
-    ctx.fill();*/
     ctx.drawImage(sprite.img, sprite.x, sprite.y, 96, 192);
 }
 
@@ -91,9 +87,11 @@ $(document).ready(function() {
         }
         if (playerMovement.left) {
             sprites[mySpriteNum].x -= speed;
+            sprites[mySpriteNum].img = sprites[mySpriteNum].leftImg;
         }
         if (playerMovement.right) {
             sprites[mySpriteNum].x += speed;
+            sprites[mySpriteNum].img = sprites[mySpriteNum].rightImg;
         }
         refreshCanvas();
     }, 50);
@@ -131,8 +129,14 @@ $(document).ready(function() {
         socket.on('startstate', function(data) {
             $.each(data.sprites, function() {
                 var img = new Image();
-                img.src = 'data:image/png;base64,' + this.imgstr;
-                this.img = img;
+                img.src = 'data:image/png;base64,' + this.leftStr;
+                this.leftImg = img;
+
+                var img = new Image();
+                img.src = 'data:image/png;base64,' + this.rightStr;
+                this.rightImg = img;
+
+                this.img = this.rightImg;
             });
             sprites = data.sprites;
             mySpriteNum = data.usernum;
@@ -140,12 +144,17 @@ $(document).ready(function() {
         });
 
         socket.on('newsprite', function(data) {
-            console.log(data.sprite.imgstr);
             var img = new Image();
-            img.src = 'data:image/png;base64,' + data.sprite.imgstr;
-            data.sprite.img = img;
+            img.src = 'data:image/png;base64,' + data.sprite.leftStr;
+            data.sprite.leftImg = img;
+
+            var img = new Image();
+            img.src = 'data:image/png;base64,' + data.sprite.rightStr;
+            data.sprite.rightImg = img;
+
+            data.sprite.img = data.sprite.rightImg;
+
             sprites[data.num] = (data.sprite);
-            console.log(sprites);
         });
 
         // $(document).on("keydown", function(evt) {

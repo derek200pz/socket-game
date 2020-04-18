@@ -1,8 +1,9 @@
 module.exports = {
     //create a sprite object.. very basic
-    spriteFactory: function(num, imgstr) {
+    spriteFactory: function(num, img1, img2) {
         return {
-            "imgstr": imgstr,
+            "leftStr": img1,
+            "rightStr": img2,
             "id": num,
             "x": 0,
             "y": 0
