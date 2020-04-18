@@ -63,9 +63,12 @@ io.on('connection', function(socket) {
     fs.readFile(__dirname + '/img/delmar.png', function(err, buf) {
         if (err) {
             console.log("errorrrrrr");
+            sprites[usernum] = spriteFactory(usernum, "iVBORw0KGgoAAAANSUhEUgAAACAAAABACAYAAAB7jnWuAAAUO3…EwbssA8SNZV6kenWu+B8lpST5+xEh2wAAAABJRU5ErkJggg==");
+            io.sockets.emit('newsprite', { num: usernum, sprite: sprites[usernum] });
+        } else {
+            sprites[usernum] = spriteFactory(usernum, buf.toString('base64'));
+            io.sockets.emit('newsprite', { num: usernum, sprite: sprites[usernum] });
         }
-        sprites[usernum] = spriteFactory(usernum, buf.toString('base64'));
-        io.sockets.emit('newsprite', { num: usernum, sprite: sprites[usernum] });
     });
 
     //when the user moves, move them
