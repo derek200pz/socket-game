@@ -87,13 +87,12 @@ $(document).ready(function() {
         });
 
         socket.on('newsprite', function(data) {
-            console.log(data);
+            console.log(data.sprite.imgstr);
             var img = new Image();
             img.src = 'data:image/png;base64,' + data.sprite.imgstr;
             data.sprite.img = img;
             sprites[data.num] = (data.sprite);
             console.log(sprites);
-            refreshCanvas();
         });
 
         $(document).on("keydown", function(evt) {
