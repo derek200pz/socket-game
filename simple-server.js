@@ -6,8 +6,8 @@ var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 var fs = require('fs');
 //my own files
-var tools = require('./tools');
-var images = require('./images.json');
+var tools = require('./server-js/tools'); //some functions to do sprite manipulation and game logic
+var images = require('./json/images.json'); //all images in the img folder, converted into base64 strings because heroku was being a butt
 
 const verbose = true;
 var users = 0;
@@ -66,5 +66,6 @@ io.on('connection', function(socket) {
 });
 
 
-//listen
+console.log("listening on port 8080")
+    //listen
 server.listen(process.env.PORT || 8080);

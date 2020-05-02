@@ -32,7 +32,12 @@ var clearCanvas = function() {
 
 var refreshCanvas = function() {
     clearCanvas();
+    spritesClone = []
     $.each(sprites, function(i, sprite) {
+        spritesClone.push(sprite);
+    });
+    spritesClone.sort(function(a, b) { return (a.y - b.y) }) //sort the sprites by y position
+    $.each(spritesClone, function(i, sprite) {
         draw(sprite);
     });
 }

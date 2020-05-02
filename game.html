@@ -30,21 +30,20 @@
 
     <!-- Notice the URL, this is handled by socket.io on the server automatically, via express -->
     <script type="text/javascript" src="socket.io/socket.io.js"></script>
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js"></script> -->
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 
-    <!-- This will create a connection to socket.io, and print the user serverid that we sent from the server side. -->
-    <script type="text/javascript" src="game-script.js"></script>
-    <script type="text/javascript" src="speech-bubble.js"></script>
-    <script type="text/javascript" src="text-loader.js"></script>
+    <!-- Import all of the custom JS for the game -->
+    <script type="text/javascript" src="js/game-script.js"></script>
+    <script type="text/javascript" src="js/speech-bubble.js"></script>
+    <script type="text/javascript" src="js/text-loader.js"></script>
 
 </head>
 
 <body>
     <h1 class="text-center">Something Mysterious is afoot...</h1>
-    <p class="text-center">This website is still under construction. &nbsp;&nbsp;&nbsp; <span id="latest-update">Also, you need to enable javascipt.</span></p>
+    <p class="text-center">This website is still under construction. &nbsp;&nbsp;&nbsp; Latest Commit:<span id="latest-update">Also, you need to enable javascipt.</span></p>
     <canvas id="canvas" width="1300" height="500"></canvas>
 </body>
 

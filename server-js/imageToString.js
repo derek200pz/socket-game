@@ -5,7 +5,7 @@ const fs = require('fs');
 var images = {};
 
 var writeToJson = function(images) {
-    fs.writeFile("images.json", JSON.stringify(images), err => {
+    fs.writeFile("json/images.json", JSON.stringify(images), err => {
         // Checking for errors 
         if (err) throw err;
 
@@ -18,7 +18,7 @@ var writeToJson = function(images) {
 
 
 //joining path of directory 
-const directoryPath = path.join(__dirname, 'img');
+const directoryPath = path.join(__dirname, '../img');
 //passing directoryPath and callback function
 fs.readdir(directoryPath, function(err, files) {
     //handling error
