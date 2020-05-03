@@ -32,7 +32,7 @@ fs.readdir(directoryPath, function(err, files) {
 
         fs.readFile(directoryPath + '/' + file, function(err, buf) {
             if (err) {
-                console.log("errorrrrrr in: ");
+                console.log("errorrrrr in: ");
                 console.log(directoryPath + '/' + file);
                 console.log(err);
             } else {
