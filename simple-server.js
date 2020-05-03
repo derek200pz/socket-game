@@ -46,7 +46,7 @@ io.on('connection', function(socket) {
     socket.emit('startstate', { sprites: sprites, usernum: usernum });
 
     //create and broadcase a new sprite for the new user
-    sprites[usernum] = tools.spriteFactory(usernum, images["delmar-left"], images["delmar-right"]);
+    sprites[usernum] = tools.spriteFactory(usernum);
     io.sockets.emit('newsprite', { num: usernum, sprite: sprites[usernum] });
 
     //when the user moves, tell everyone else

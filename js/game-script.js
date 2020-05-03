@@ -146,6 +146,26 @@ $(document).ready(function() {
             refreshCanvas();
         });
 
+        var buildImages = function(sprite) {
+            var img = new Image();
+            img.src = 'data:image/png;base64,' + sprite.leftStr;
+            sprite.leftImg = img;
+
+            var img = new Image();
+            img.src = 'data:image/png;base64,' + sprite.rightStr;
+            sprite.rightImg = img;
+
+            var img = new Image();
+            img.src = 'data:image/png;base64,' + sprite.rightStr;
+            sprite.rightImg = img;
+
+            var img = new Image();
+            img.src = 'data:image/png;base64,' + sprite.rightStr;
+            sprite.rightImg = img;
+
+            sprite.img = sprite.rightImg;
+        }
+
         socket.on('newsprite', function(data) {
             var img = new Image();
             img.src = 'data:image/png;base64,' + data.sprite.leftStr;

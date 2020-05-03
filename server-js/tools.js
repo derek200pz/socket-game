@@ -1,9 +1,15 @@
+var images = require('../json/images.json'); //all images in the img folder, converted into base64 strings because heroku was being a butt
+
 module.exports = {
     //create a sprite object.. very basic
-    spriteFactory: function(num, img1, img2) {
+    spriteFactory: function(num) {
         return {
-            "leftStr": img1,
-            "rightStr": img2,
+            "rightStr": images["delmar-right"],
+            "leftStr": images["delmar-left"],
+            "rightWalkStr1": images["delmar-walking-right-1"],
+            "leftWalkStr1": images["delmar-walking-left-1"],
+            "rightWalkStr2": images["delmar-walking-right-2"],
+            "leftWalkStr2": images["delmar-walking-left-2"],
             "id": num,
             "x": 0,
             "y": 0
