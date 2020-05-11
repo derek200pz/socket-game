@@ -4,12 +4,15 @@ module.exports = {
     //create a sprite object.. very basic
     spriteFactory: function(num) {
         return {
-            "rightStr": images["delmar-right"],
-            "leftStr": images["delmar-left"],
-            "rightWalkStr1": images["delmar-walking-right-1"],
-            "leftWalkStr1": images["delmar-walking-left-1"],
-            "rightWalkStr2": images["delmar-walking-right-2"],
-            "leftWalkStr2": images["delmar-walking-left-2"],
+            "positions": {
+                "right": images["delmar-right"],
+                "left": images["delmar-left"],
+                "rightWalk1": images["delmar-walking-right-1"],
+                "leftWalk1": images["delmar-walking-left-1"],
+                "rightWalk2": images["delmar-walking-right-2"],
+                "leftWalk2": images["delmar-walking-left-2"]
+            },
+            "display": "right",
             "id": num,
             "x": 0,
             "y": 0

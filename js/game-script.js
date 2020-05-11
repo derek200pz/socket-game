@@ -11,19 +11,21 @@ var mySpriteNum = -1;
 //functions
 
 var draw = function(sprite) {
-    ctx.drawImage(sprite.img, sprite.x, sprite.y, 96, 192);
+    ctx.drawImage(sprite.images[sprite.display], sprite.x, sprite.y, 96, 192);
 }
 
-var updateSprite = function(sprite, newx, newy) {
-    if (sprite.x < newx) {
-        sprite.img = sprite.rightImg;
-        console.log("faceright")
-    } else if (sprite.x > newx) {
-        sprite.img = sprite.leftImg;
-        console.log("faceleft")
-    }
+var updateSprite = function(sprite, newx, newy, newd) {
     sprite.x = newx;
     sprite.y = newy;
+    sprite.display = newd;
+}
+
+var setWalkImg = function(sprite, direction, beat) {
+    if (beat % 2 == 0) {
+        sprite.display = direction + "Walk2";
+    } else {
+        sprite.display = direction + "Walk1";
+    }
 }
 
 var clearCanvas = function() {
@@ -39,6 +41,15 @@ var refreshCanvas = function() {
     spritesClone.sort(function(a, b) { return (a.y - b.y) }) //sort the sprites by y position
     $.each(spritesClone, function(i, sprite) {
         draw(sprite);
+    });
+}
+
+var buildImages = function(sprite) {
+    sprite.images = {};
+    $.each(sprite.positions, function(name, imgstr) {
+        var img = new Image();
+        img.src = 'data:image/png;base64,' + imgstr;
+        sprite.images[name] = img;
     });
 }
 
@@ -100,8 +111,10 @@ $(document).ready(function() {
         //  \   /
         //   \ /
         //    V
-        //the heartbeat of the game: this is executed every .25 seconds
+        //the heartbeat of the game: this is executed every .05 seconds
+        var heartBeat = 0;
         setInterval(() => {
+            heartBeat = (heartBeat + 1) % 1000;
             var change = false;
             if (playerMovement.up) {
                 sprites[mySpriteNum].y -= speed;
@@ -113,70 +126,41 @@ $(document).ready(function() {
             }
             if (playerMovement.left) {
                 sprites[mySpriteNum].x -= speed;
-                sprites[mySpriteNum].img = sprites[mySpriteNum].leftImg;
+                sprites[mySpriteNum].display = "left";
                 change = true;
             }
             if (playerMovement.right) {
                 sprites[mySpriteNum].x += speed;
-                sprites[mySpriteNum].img = sprites[mySpriteNum].rightImg;
+                sprites[mySpriteNum].display = "right";
                 change = true;
             }
+
+            var direction = (sprites[mySpriteNum].display.indexOf("right") == -1 ? "left" : "right") //if the display image contains the word "right", face right. Otherwise left.
             if (change) {
-                socket.emit('imoved', { newcoords: { x: sprites[mySpriteNum].x, y: sprites[mySpriteNum].y } });
+                setWalkImg(sprites[mySpriteNum], direction, heartBeat);
+                socket.emit('imoved', { newcoords: { x: sprites[mySpriteNum].x, y: sprites[mySpriteNum].y }, display: sprites[mySpriteNum].display });
+            } else {
+                sprites[mySpriteNum].display = direction;
             }
+
             refreshCanvas();
 
-        }, 50);
+        }, 100);
 
 
         socket.on('startstate', function(data) {
             $.each(data.sprites, function() {
-                var img = new Image();
-                img.src = 'data:image/png;base64,' + this.leftStr;
-                this.leftImg = img;
-
-                var img = new Image();
-                img.src = 'data:image/png;base64,' + this.rightStr;
-                this.rightImg = img;
-
-                this.img = this.rightImg;
+                buildImages(this);
             });
             sprites = data.sprites;
             mySpriteNum = data.usernum;
             refreshCanvas();
         });
 
-        var buildImages = function(sprite) {
-            var img = new Image();
-            img.src = 'data:image/png;base64,' + sprite.leftStr;
-            sprite.leftImg = img;
 
-            var img = new Image();
-            img.src = 'data:image/png;base64,' + sprite.rightStr;
-            sprite.rightImg = img;
-
-            var img = new Image();
-            img.src = 'data:image/png;base64,' + sprite.rightStr;
-            sprite.rightImg = img;
-
-            var img = new Image();
-            img.src = 'data:image/png;base64,' + sprite.rightStr;
-            sprite.rightImg = img;
-
-            sprite.img = sprite.rightImg;
-        }
 
         socket.on('newsprite', function(data) {
-            var img = new Image();
-            img.src = 'data:image/png;base64,' + data.sprite.leftStr;
-            data.sprite.leftImg = img;
-
-            var img = new Image();
-            img.src = 'data:image/png;base64,' + data.sprite.rightStr;
-            data.sprite.rightImg = img;
-
-            data.sprite.img = data.sprite.rightImg;
-
+            buildImages(data.sprite);
             sprites[data.num] = (data.sprite);
             refreshCanvas();
         });
@@ -187,7 +171,7 @@ $(document).ready(function() {
 
         socket.on('theymoved', function(data) {
             if (data.num != mySpriteNum) {
-                updateSprite(sprites[data.num], data.newcoords.x, data.newcoords.y);
+                updateSprite(sprites[data.num], data.newcoords.x, data.newcoords.y, data.display);
             }
             refreshCanvas();
         });

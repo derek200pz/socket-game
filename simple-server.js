@@ -53,8 +53,9 @@ io.on('connection', function(socket) {
     socket.on('imoved', function(data) {
         sprites[usernum].x = data.newcoords.x;
         sprites[usernum].y = data.newcoords.y;
+        sprites[usernum].display = data.display;
         if (verbose) console.log("moved a sprite, usernum = " + usernum);
-        io.sockets.emit('theymoved', { num: usernum, newcoords: { x: sprites[usernum].x, y: sprites[usernum].y } });
+        io.sockets.emit('theymoved', { num: usernum, display: sprites[usernum].display, newcoords: { x: sprites[usernum].x, y: sprites[usernum].y } });
     });
 
     //when the user leaves, delete them

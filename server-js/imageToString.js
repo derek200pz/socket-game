@@ -27,23 +27,25 @@ fs.readdir(directoryPath, function(err, files) {
     }
     //listing all files using forEach
     files.forEach(function(file) {
-        // Do whatever you want to do with the file
-        console.log(file);
+        if (file.indexOf(".png") != -1) {
+            // Do whatever you want to do with the file
+            console.log(file);
 
-        fs.readFile(directoryPath + '/' + file, function(err, buf) {
-            if (err) {
-                console.log("errorrrrr in: ");
-                console.log(directoryPath + '/' + file);
-                console.log(err);
-            } else {
-                images[file.split('.')[0]] = buf.toString('base64');
-                console.log("    now:");
-                console.log(Object.keys(images).length);
-                console.log(files.length);
-                if (Object.keys(images).length == files.length) {
-                    writeToJson(images);
+            fs.readFile(directoryPath + '/' + file, function(err, buf) {
+                if (err) {
+                    console.log("errorrrrr in: ");
+                    console.log(directoryPath + '/' + file);
+                    console.log(err);
+                } else {
+                    images[file.split('.')[0]] = buf.toString('base64');
+                    console.log("    now:");
+                    console.log(Object.keys(images).length);
+                    console.log(files.length - 1);
+                    if (Object.keys(images).length == files.length - 1) { // length-1 because there is exactly 1 directory (the "depricated" directory)
+                        writeToJson(images);
+                    }
                 }
-            }
-        });
+            });
+        }
     });
 });
