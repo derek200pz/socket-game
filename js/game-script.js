@@ -96,8 +96,7 @@ $(document).ready(function() {
     document.addEventListener('keyup', keyUpHandler, false);
 
 
-
-
+    var heart = null;
 
     //Now we can listen for that event
     socket.on('connect', function() {
@@ -111,9 +110,10 @@ $(document).ready(function() {
         //  \   /
         //   \ /
         //    V
-        //the heartbeat of the game: this is executed every .05 seconds
+        //the heartbeat of the game: this is executed every .1 seconds
+        clearInterval(heart)
         var heartBeat = 0;
-        setInterval(() => {
+        heart = setInterval(() => {
             heartBeat = (heartBeat + 1) % 1000;
             var change = false;
             if (playerMovement.up) {
@@ -140,13 +140,15 @@ $(document).ready(function() {
                 setWalkImg(sprites[mySpriteNum], direction, heartBeat);
                 socket.emit('imoved', { newcoords: { x: sprites[mySpriteNum].x, y: sprites[mySpriteNum].y }, display: sprites[mySpriteNum].display });
             } else {
+                if (sprites[mySpriteNum].display != direction) {
+                    socket.emit('imoved', { newcoords: { x: sprites[mySpriteNum].x, y: sprites[mySpriteNum].y }, display: direction });
+                }
                 sprites[mySpriteNum].display = direction;
             }
 
             refreshCanvas();
 
         }, 100);
-
 
         socket.on('startstate', function(data) {
             $.each(data.sprites, function() {
@@ -157,17 +159,11 @@ $(document).ready(function() {
             refreshCanvas();
         });
 
-
-
         socket.on('newsprite', function(data) {
             buildImages(data.sprite);
             sprites[data.num] = (data.sprite);
             refreshCanvas();
         });
-
-        // $(document).on("keydown", function(evt) {
-        //     socket.emit('movekey', { keyCode: evt.keyCode });
-        // })
 
         socket.on('theymoved', function(data) {
             if (data.num != mySpriteNum) {
