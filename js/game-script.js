@@ -5,7 +5,7 @@ console.log("About to get all the variables ready")
 var canv;
 var ctx;
 var sprites = [];
-var speed = 10;
+var speed = 9;
 var mySpriteNum = -1;
 
 //functions
@@ -48,7 +48,12 @@ var buildImages = function(sprite) {
     sprite.images = {};
     $.each(sprite.positions, function(name, imgstr) {
         var img = new Image();
-        img.src = 'data:image/png;base64,' + imgstr;
+        if (imgstr.substring(0, 22) != 'data:image/png;base64,') {
+            img.src = 'data:image/png;base64,' + imgstr;
+        } else {
+            img.src = imgstr;
+        }
+
         sprite.images[name] = img;
     });
 }
@@ -61,6 +66,14 @@ $(document).ready(function() {
     canv.width
     ctx = canv.getContext("2d");
     ctx.imageSmoothingEnabled = false;
+
+    //stop borwser from scrolling with arrow keys
+    window.addEventListener("keydown", function(e) {
+        // space and arrow keys
+        if ([32, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+            e.preventDefault();
+        }
+    }, false);
 
     //handle key presses
     const playerMovement = {
