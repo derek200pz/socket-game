@@ -6,12 +6,13 @@ var canv;
 var ctx;
 var sprites = [];
 var speed = 9;
+var scale = 3;
 var mySpriteNum = -1;
 
 //functions
 
 var draw = function(sprite) {
-    ctx.drawImage(sprite.images[sprite.display], sprite.x, sprite.y, 96, 192);
+    ctx.drawImage(sprite.images[sprite.display], sprite.x, sprite.y, sprite.images[sprite.display].width * scale, sprite.images[sprite.display].height * scale);
 }
 
 var updateSprite = function(sprite, newx, newy, newd) {
@@ -38,7 +39,7 @@ var refreshCanvas = function() {
     $.each(sprites, function(i, sprite) {
         spritesClone.push(sprite);
     });
-    spritesClone.sort(function(a, b) { return (a.y - b.y) }) //sort the sprites by y position
+    spritesClone.sort(function(a, b) { return (a.y + a.images[a.display].height * scale - (b.y + b.images[b.display].height * scale)) }) //sort the sprites by y position, taking height into account
     $.each(spritesClone, function(i, sprite) {
         draw(sprite);
     });
